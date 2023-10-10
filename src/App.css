@@ -36,3 +36,26 @@
     transform: rotate(360deg);
   }
 }
+
+.author {
+  justify-content: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.imageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.listWrapper {
+  min-height: 90vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+  gap: 40px;
+}

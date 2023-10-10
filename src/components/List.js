@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPhotos } from "../api";
 import { addItems, pageIncrement } from "../reducers/app";
+import "../App.css";
 
 const List = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -11,13 +12,11 @@ const List = () => {
 
   const loadMoreItems = async () => {
     setIsLoading(true);
-
     const { images } = await fetchPhotos({
       perPage: 30,
       page: page,
     });
     dispatch(addItems(images));
-    dispatch(pageIncrement());
     setIsLoading(false);
   };
 
@@ -29,34 +28,31 @@ const List = () => {
     };
   }, []);
 
+  useEffect(() => {
+    page !== 1 && loadMoreItems();
+  }, [page]);
+
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop ===
       document.documentElement.offsetHeight
     ) {
-      loadMoreItems();
+      dispatch(pageIncrement());
     }
   };
 
   return (
-    <div
-      style={{
-        minHeight: "90vh",
-        width: "100%",
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
-        justifyItems: "center",
-        alignItems: "center",
-        textAlign: "center",
-        gap: 40,
-      }}
-    >
+    <div className="listWrapper">
       {list.map((item, index) => (
-        <div key={index}>
-          <img src={item.urls.thumb} alt={item.user?.username} />
-          <p>{item.user?.username}</p>
+        <div className="imageWrapper" key={index}>
+          <img
+            className="image"
+            src={item.urls.thumb}
+            alt={item.user?.username}
+          />
+          <p className="author">{item.user?.username}</p>
         </div>
-      ))}{" "}
+      ))}
       {isLoading && <p>Loading...</p>}
     </div>
   );
